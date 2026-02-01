@@ -4,10 +4,10 @@
 
 The **UBC Science Academic Placement Planner** is a desktop application designed to help first-year UBC Science students navigate the competitive process of declaring a major. The application provides a centralized platform where students can:
 
-**1. Rank Specializations:** View a list of science majors ranked by their historical competitiveness and GPA requirements.
-**2. Prerequisite Check:** Input current courses and intended majors to identify missing required courses based on UBC’s official specialization requirements.
-**3. Probability Estimation:** Use a statistical model to calculate the likelihood of admission into specific majors based on the user's current GPA, accounting for historical "turbulence" and year-to-year fluctuations.
-**4. Strategic Recommendations:** Categorize majors into "Top Choice" (ambitious) and "Insurance Choice" (safe) based on the user's academic profile.
+* **1. Rank Specializations:** View a list of science majors ranked by their historical competitiveness and GPA requirements.
+* **2. Prerequisite Check:** Input current courses and intended majors to identify missing required courses based on UBC’s official specialization requirements.
+* **3. Probability Estimation:** Use a statistical model to calculate the likelihood of admission into specific majors based on the user's current GPA, accounting for historical "turbulence" and year-to-year fluctuations.
+* **4. Strategic Recommendations:** Categorize majors into "Top Choice" (ambitious) and "Insurance Choice" (safe) based on the user's academic profile.
 
 ## Target users
 
