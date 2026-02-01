@@ -8,3 +8,4 @@ A *bulleted* list:
 - item 3
 
 An example of text with **bold** and *italic* fonts.  
+# ubc-science-specialization-helper
