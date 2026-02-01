@@ -1,6 +1,6 @@
 # UBC Science Academic Placement Planner
 
-## What does this helper do?
+## What does this planner do?
 
 The **UBC Science Academic Placement Planner** is a desktop application designed to help first-year UBC Science students navigate the competitive process of declaring a major. The application provides a centralized platform where students can:
 
@@ -13,7 +13,7 @@ The **UBC Science Academic Placement Planner** is a desktop application designed
 
 The primary users are **first-year UBC Science students** (both domestic and international) who are preparing to apply for their specializations in June. It is also useful for students in other faculties looking to transfer into Science.
 
-## Why this helper application is practical and useful
+## Why this planner application is practical and useful
 
 Many first-year students, including myself, find the specialization application process stressful and opaque. While historical cut-off grades are available, there isn't a tool that systematically aggregates this data to provide a personalized probability of entry. This project is meaningful because it transforms raw data into actionable advice, helping peers make informed decisions about their academic futures and reducing the anxiety associated with "second-year placement."
 
