@@ -22,6 +22,7 @@ Many first-year students, including myself, find the specialization application 
 ## User Stories
 
 - As a user, firstly, I want to be able to **add a course** (including course code, credits, and grade) to my **academic record** so I can track my current standing, so that I can start my planning process.
-- As a user, I want to be able to **view a list** of all science specializations and their historical average GPA cut-offs.
+- As a user, I want to be able to **view a list** of all science specializations and their historical **average** GPA cut-offs.
+- As a user, I want to be able to **view a rank** of all science specializations based on their historical competitiveness.
 - As a user, I want to select a specific major and see a **calculated probability percentage** of admission based on my current profile.
 - As a user, I want the application to **identify and display a list of missing prerequisite courses** for my target specialization based on the courses I have already entered.
