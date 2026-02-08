@@ -26,3 +26,4 @@ Many first-year students, including myself, find the specialization application 
 - As a user, I want to be able to **view a rank** of all science specializations based on their historical competitiveness.
 - As a user, I want to select a specific major and see a **calculated probability percentage** of admission based on my current profile.
 - As a user, I want the application to **identify and display a list of missing prerequisite courses** for my target specialization based on the courses I have already entered.
+- As a user, I want to be able to see the **top searched specialization** on this app.
