@@ -17,19 +17,21 @@ public class Course {
      * studentGrade.
      */
     public Course(String courseCode, int courseCredits, float studentGrade) {
-        // stub
+        this.code = courseCode;
+        this.credits = courseCredits;
+        this.grade = studentGrade;
     }
 
     public String getCode() {
-        return "";
+        return code;
     }
 
     public int getCredits() {
-        return 0;
+        return credits;
     }
 
     public float getGrade() {
-        return 0.0f;
+        return grade;
     }
 
 }
