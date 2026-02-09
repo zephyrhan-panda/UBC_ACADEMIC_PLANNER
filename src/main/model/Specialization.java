@@ -16,19 +16,21 @@ public class Specialization {
      * the prerequisites are set to prerequisites.
      */
     public Specialization(String name, Float cutoff, ArrayList<Course> prerequisites) {
-        // stub
+        this.name = name;
+        this.cutoff = cutoff;
+        this.prerequisites = prerequisites;
     }
 
     public String getName() {
-        return "";
+        return name;
     }
 
     public Float getCutoff() {
-        return 0.0f;
+        return cutoff;
     }
 
     public ArrayList<Course> getPrerequisites() {
-        return null;
+        return prerequisites;
     }
 
 }
