@@ -17,7 +17,7 @@ public class CourseTest {
     @Test
 
     void testConstructor() {
-        assertEquals("CPSC210", testCourse.getClass());
+        assertEquals("CPSC210", testCourse.getCode());
         assertEquals(4, testCourse.getCredits());
         assertEquals(98.0f, testCourse.getGrade());
 
