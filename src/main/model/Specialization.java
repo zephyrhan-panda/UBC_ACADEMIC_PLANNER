@@ -27,7 +27,8 @@ public class Specialization {
 
     /**
      * REQUIRES: cutoff is not empty, added from oldest to newest.
-     * EFFECTS: returns a weighted average where more recent years have higher weights.
+     * EFFECTS: returns a weighted average where more recent years have higher
+     * weights.
      * Weight for index i is set to be (i + 1) for now.
      */
     public double getHistoricalAverage() {
@@ -35,11 +36,10 @@ public class Specialization {
         int totalWeights = 0;
 
         for (int index = 0; index < cutoff.size(); index++) {
-            int weight = index + 1; 
+            int weight = index + 1;
             weightedSum += cutoff.get(index) * weight;
             totalWeights += weight;
         }
-
         return weightedSum / totalWeights;
     }
 

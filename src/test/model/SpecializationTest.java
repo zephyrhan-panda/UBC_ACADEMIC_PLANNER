@@ -36,7 +36,6 @@ public class SpecializationTest {
 
         assertEquals("Computer Science", testSpecialization.getName());
         assertEquals(testCutoffs, testSpecialization.getCutoff());
-
         ArrayList<Course> retrievedPrereqs = testSpecialization.getPrerequisites();
         assertEquals(2, retrievedPrereqs.size());
         assertTrue(retrievedPrereqs.contains(course1));
@@ -47,10 +46,10 @@ public class SpecializationTest {
     @Test
     void testGetHistoricalAverageWeighted() {
         ArrayList<Double> manyCutoffs = new ArrayList<>();
-        manyCutoffs.add(80.0); 
-        manyCutoffs.add(84.0); 
-        manyCutoffs.add(90.0); 
-        
+        manyCutoffs.add(80.0);
+        manyCutoffs.add(84.0);
+        manyCutoffs.add(90.0);
+
         double expected = 518.0 / 6.0;
 
         Specialization weightedSpec = new Specialization("Computer Science", manyCutoffs, new ArrayList<>());
