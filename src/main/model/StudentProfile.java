@@ -26,7 +26,7 @@ public class StudentProfile {
      * EFFECTS: adds the given course to the student's academic record.
      */
     public void addCourse(Course course) {
-        // stub
+        completedCourses.add(course);
     }
 
     /**
@@ -34,8 +34,16 @@ public class StudentProfile {
      * EFFECTS: returns the weighted average GPA of all courses in the profile,
      * using formula: sum(grade * credits) / total_credits
      */
-    public double calculateGPA() {
-        return 0.0; // stub
+    public float calculateGPA() {
+        float sumGrade = 0.0f;
+        int totalCredits = 0;
+
+        for (Course c : completedCourses) {
+            sumGrade += c.getGrade()*c.getCredits();
+            totalCredits += c.getCredits();
+        }
+
+        return sumGrade / totalCredits;
     }
 
     /**
@@ -45,7 +53,31 @@ public class StudentProfile {
      * 2. Student has completed all required prerequisites.
      */
     public boolean eligible(Specialization targetSpec) {
-        return false; // stub
+        double studentGPA = calculateGPA();
+        if (studentGPA < targetSpec.getHistoricalAverage()) {
+            return false;
+        }
+
+        for (Course requiredc : targetSpec.getPrerequisites()) {
+            if (!hasCompleted(requiredc.getCode())) {
+                return false;
+            }
+        }     
+        return true;
+    }
+
+    /**
+     * REQUIRES: courseCode is not null.
+     * EFFECTS: returns true if there is a course in completedCourses 
+     * with the given courseCode; false otherwise.
+     */
+    private boolean hasCompleted(String courseCode) {
+        for (Course c : completedCourses) {
+            if (c.getCode().equals(courseCode)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getName() {

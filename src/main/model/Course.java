@@ -5,7 +5,7 @@ package model;
 public class Course {
     private String code;
     private int credits;
-    private float grade;
+    private double grade;
 
     /*
      * REQUIRES: courseCode has a non-zero length;
@@ -16,7 +16,7 @@ public class Course {
      * set to be the courseCredits; the grade of the course is set as
      * studentGrade.
      */
-    public Course(String courseCode, int courseCredits, float studentGrade) {
+    public Course(String courseCode, int courseCredits, double studentGrade) {
         this.code = courseCode;
         this.credits = courseCredits;
         this.grade = studentGrade;
@@ -30,7 +30,7 @@ public class Course {
         return credits;
     }
 
-    public float getGrade() {
+    public double getGrade() {
         return grade;
     }
 

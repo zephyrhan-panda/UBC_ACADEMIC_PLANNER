@@ -10,8 +10,8 @@ public class CourseTest {
     private Course testCourse;
 
     @BeforeEach
-    void setup() {
-        testCourse = new Course("CPSC210", 4, 98.0f);
+    void runBefore() {
+        testCourse = new Course("CPSC210", 4, 98.0);
     }
 
     @Test

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 //   prerequisites is a list of courses a student must complete to apply.
 public class Specialization {
     private String name;
-    private ArrayList<Float> cutoff;
+    private ArrayList<Double> cutoff;
     private ArrayList<Course> prerequisites;
 
     /**
@@ -19,17 +19,35 @@ public class Specialization {
      * the cutoff is set to cutoff;
      * the prerequisites are set to prerequisites.
      */
-    public Specialization(String name, ArrayList<Float> cutoff, ArrayList<Course> prerequisites) {
+    public Specialization(String name, ArrayList<Double> cutoff, ArrayList<Course> prerequisites) {
         this.name = name;
         this.cutoff = cutoff;
         this.prerequisites = prerequisites;
+    }
+
+    /**
+     * REQUIRES: cutoff is not empty, added from oldest to newest.
+     * EFFECTS: returns a weighted average where more recent years have higher weights.
+     * Weight for index i is set to be (i + 1) for now.
+     */
+    public double getHistoricalAverage() {
+        double weightedSum = 0;
+        int totalWeights = 0;
+
+        for (int index = 0; index < cutoff.size(); index++) {
+            int weight = index + 1; 
+            weightedSum += cutoff.get(index) * weight;
+            totalWeights += weight;
+        }
+
+        return weightedSum / totalWeights;
     }
 
     public String getName() {
         return name;
     }
 
-    public ArrayList<Float> getCutoff() {
+    public ArrayList<Double> getCutoff() {
         return cutoff;
     }
 
