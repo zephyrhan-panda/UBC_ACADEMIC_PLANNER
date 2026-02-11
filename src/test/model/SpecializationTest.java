@@ -13,23 +13,29 @@ public class SpecializationTest {
     private ArrayList<Course> testPrerequisites;
     private Course course1;
     private Course course2;
+    private ArrayList<Float> testCutoffs;
 
     @BeforeEach
-    void setup() {
+    void runBefore() {
         testPrerequisites = new ArrayList<>();
         course1 = new Course("CPSC110", 4, 0.0f);
         course2 = new Course("CPSC121", 4, 0.0f);
         testPrerequisites.add(course1);
         testPrerequisites.add(course2);
 
-        testSpecialization = new Specialization("Computer Science", 85.0f, testPrerequisites);
+        testCutoffs = new ArrayList<>();
+        testCutoffs.add(85.0f);
+        testCutoffs.add(87.0f);
+        testCutoffs.add(89.0f);
+
+        testSpecialization = new Specialization("Computer Science", testCutoffs, testPrerequisites);
     }
 
     @Test
     void testConstructor() {
 
         assertEquals("Computer Science", testSpecialization.getName());
-        assertEquals(85.0f, testSpecialization.getCutoff());
+        assertEquals(testCutoffs, testSpecialization.getCutoff());
 
         ArrayList<Course> retrievedPrereqs = testSpecialization.getPrerequisites();
         assertEquals(2, retrievedPrereqs.size());
