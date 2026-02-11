@@ -2,9 +2,13 @@ package model;
 
 import java.util.ArrayList;
 
+//   Represents a UBC Science specialization where:
+//   name is the official title of the major,
+//   cutoff is the list of historical average GPA required for entry,
+//   prerequisites is a list of courses a student must complete to apply.
 public class Specialization {
     private String name;
-    private float cutoff;
+    private ArrayList<Float> cutoff;
     private ArrayList<Course> prerequisites;
 
     /**
@@ -15,7 +19,7 @@ public class Specialization {
      * the cutoff is set to cutoff;
      * the prerequisites are set to prerequisites.
      */
-    public Specialization(String name, Float cutoff, ArrayList<Course> prerequisites) {
+    public Specialization(String name, ArrayList<Float> cutoff, ArrayList<Course> prerequisites) {
         this.name = name;
         this.cutoff = cutoff;
         this.prerequisites = prerequisites;
@@ -25,7 +29,7 @@ public class Specialization {
         return name;
     }
 
-    public Float getCutoff() {
+    public ArrayList<Float> getCutoff() {
         return cutoff;
     }
 
