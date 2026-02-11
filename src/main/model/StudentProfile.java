@@ -39,10 +39,9 @@ public class StudentProfile {
         int totalCredits = 0;
 
         for (Course c : completedCourses) {
-            sumGrade += c.getGrade()*c.getCredits();
+            sumGrade += c.getGrade() * c.getCredits();
             totalCredits += c.getCredits();
         }
-
         return sumGrade / totalCredits;
     }
 
@@ -62,13 +61,13 @@ public class StudentProfile {
             if (!hasCompleted(requiredc.getCode())) {
                 return false;
             }
-        }     
+        }
         return true;
     }
 
     /**
      * REQUIRES: courseCode is not null.
-     * EFFECTS: returns true if there is a course in completedCourses 
+     * EFFECTS: returns true if there is a course in completedCourses
      * with the given courseCode; false otherwise.
      */
     private boolean hasCompleted(String courseCode) {
