@@ -19,11 +19,11 @@ public class StudentProfileTest {
         c2 = new Course("MATH100", 3, 80.0);
 
         ArrayList<Double> cutoffs = new ArrayList<>();
-        cutoffs.add(85.0); 
-        
+        cutoffs.add(85.0);
+
         ArrayList<Course> prereqs = new ArrayList<>();
-        prereqs.add(c1); 
-        
+        prereqs.add(c1);
+
         spec = new Specialization("Computer Science", cutoffs, prereqs);
     }
 
@@ -43,8 +43,8 @@ public class StudentProfileTest {
 
     @Test
     void testCalculateGPA() {
-        testProfile.addCourse(c1); 
-        testProfile.addCourse(c2); 
+        testProfile.addCourse(c1);
+        testProfile.addCourse(c2);
 
         double expectedGPA = 88.0;
         assertEquals(expectedGPA, testProfile.calculateGPA(), 0.001);
@@ -52,7 +52,7 @@ public class StudentProfileTest {
 
     @Test
     void testEligibleSuccess() {
-        testProfile.addCourse(c1); 
+        testProfile.addCourse(c1);
         testProfile.addCourse(c2);
 
         assertTrue(testProfile.eligible(spec));
