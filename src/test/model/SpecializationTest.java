@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,4 +57,39 @@ public class SpecializationTest {
 
         assertEquals(expected, weightedSpec.getHistoricalAverage(), 0);
     }
+
+    @Test
+    void testAddSearchCount() {
+        assertEquals(0, testSpecialization.getSearchCount());
+        testSpecialization.addSearchCount();
+        assertEquals(1, testSpecialization.getSearchCount());
+        testSpecialization.addSearchCount();
+        assertEquals(2, testSpecialization.getSearchCount());
+    }
+
+    @Test
+    void testGetMissingPrerequisites() {
+        StudentProfile profile = new StudentProfile("SampleFile");
+        Course c1 = new Course("CPSC110", 4, 90.0);
+        profile.addCourse(c1);
+        
+        ArrayList<Course> missing = testSpecialization.getMissingPrerequisites(testSpecialization, profile);
+        assertEquals(1, missing.size());
+        assertEquals("CPSC121", missing.get(0).getCode());
+    }
+
+    @Test
+    void testGetHistoricalAverageEmpty() {
+        Specialization emptySpec = new Specialization("Empty", new ArrayList<>(), new ArrayList<>());
+        assertEquals(0.0, emptySpec.getHistoricalAverage());
+    }
+
+    @Test
+    void testHasCompletedNoMatches() {
+        List<Course> completed = new ArrayList<>();
+        completed.add(new Course("MATH100", 3, 90.0));
+        
+        assertFalse(testSpecialization.hasCompleted(course1, completed));
+    }
+
 }

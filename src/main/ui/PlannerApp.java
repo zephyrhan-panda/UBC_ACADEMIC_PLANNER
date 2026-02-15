@@ -18,7 +18,8 @@ public class PlannerApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes profile, specialization list, scanner, and starting status
+    // EFFECTS: initializes profile, specialization list, scanner, and starting
+    // status
     private void init() {
         userProfile = new StudentProfile("User");
         userinput = new Scanner(System.in);
@@ -30,10 +31,11 @@ public class PlannerApp {
     // MODIFIES: this
     // EFFECTS: populates the availableSpecs list with default UBC science data
     private void initializeDefaultData() {
+        ArrayList<Double> cpscCutoffs = new ArrayList<>(Arrays.asList(83.0, 85.0, 84.0));
         ArrayList<Course> cpscPrereqs = new ArrayList<>();
-        cpscPrereqs.add(new Course("CPSC110", 4, 0));
-        cpscPrereqs.add(new Course("CPSC121", 4, 0));
-        availableSpecs.add(new Specialization("Computer Science", new ArrayList<>(), cpscPrereqs));
+        cpscPrereqs.add(new Course("CPSC110", 4, 0.0));
+        cpscPrereqs.add(new Course("CPSC121", 4, 0.0));
+        availableSpecs.add(new Specialization("Computer Science", cpscCutoffs, cpscPrereqs));
     }
 
     // MODIFIES: this
@@ -98,33 +100,56 @@ public class PlannerApp {
         System.out.println("Course added! Your current GPA: " + userProfile.calculateGPA());
     }
 
-    // EFFECTS: prints the names and indices of all available specializations
+    // EFFECTS: displays the names and average historical cut-off GPAs
+    // for all available specializations
     private void viewSpecializations() {
+        System.out.println("\nAvailable Science Specializations:");
         for (int i = 0; i < availableSpecs.size(); i++) {
-            System.out.println(i + ": " + availableSpecs.get(i).getName());
+            Specialization s = availableSpecs.get(i);
+
+            System.out.println("[" + i + "] " + s.getName()
+                    + " (Average Cut-off: " + s.getHistoricalAverage() + ")");
         }
     }
 
-    // EFFECTS: displays the competitiveness ranking of specializations 
+    // MODIFIES: this
+    // EFFECTS: prompts the user to select a specialization, calculates the
+    // admission
+    // probability based on user's current GPA, and prints the result
+    private void predictAdmissionProbability() {
+        viewSpecializations();
+        System.out.print("Enter the number before the specialization to predict: ");
+        int index = userinput.nextInt();
+
+        if (index >= 0 && index < availableSpecs.size()) {
+            Specialization selected = availableSpecs.get(index);
+
+            // Calling the non-trivial logic you wrote in the StudentProfile model
+            double prob = userProfile.calculateAdmissionProbability(selected);
+
+            System.out.println("Based on your GPA of " + userProfile.calculateGPA()
+                    + ", your predicted admission probability for "
+                    + selected.getName() + " is: " + prob + "%");
+        } else {
+            System.out.println("Invalid selection. Returning to menu.");
+        }
+    }
+
+    // EFFECTS: displays the competitiveness ranking of specializations
     // Stub
     private void viewRankings() {
         System.out.println("Wait a second to see the ranking...");
     }
 
-    // EFFECTS: calculates and displays admission probability for a chosen major 
-    // Stub
-    private void predictAdmissionProbability() {
-        System.out.println("Probability calculation in progress...");
-    }
-
-    // EFFECTS: identifies and prints courses missing from prerequisites for a selected major
+    // EFFECTS: identifies and prints courses missing from prerequisites for a
+    // selected major
     private void checkPrerequisites() {
         viewSpecializations();
         System.out.print("Select specialization: ");
         int index = userinput.nextInt();
         Specialization selected = availableSpecs.get(index);
         ArrayList<Course> missing = userProfile.getMissingPrerequisites(selected);
-        
+
         if (missing.isEmpty()) {
             System.out.println("All prerequisites met!");
         } else {
@@ -135,7 +160,7 @@ public class PlannerApp {
         }
     }
 
-    // EFFECTS: shows the most searched major in the current session 
+    // EFFECTS: shows the most searched major in the current session
     // Stub
     private void viewTopSearchedMajors() {
         System.out.println("Top searched major: Computer Science");
