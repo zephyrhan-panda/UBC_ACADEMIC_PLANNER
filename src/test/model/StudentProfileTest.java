@@ -10,6 +10,7 @@ public class StudentProfileTest {
     private Course c1;
     private Course c2;
     private Specialization spec;
+    private Specialization cpscSpec;
 
     @BeforeEach
     void runBefore() {
@@ -23,8 +24,11 @@ public class StudentProfileTest {
 
         ArrayList<Course> prereqs = new ArrayList<>();
         prereqs.add(c1);
+        prereqs.add(c2);
 
         spec = new Specialization("Computer Science", cutoffs, prereqs);
+
+        cpscSpec = new Specialization("Computer Science", new ArrayList<>(), prereqs);
     }
 
     @Test
@@ -70,5 +74,48 @@ public class StudentProfileTest {
         Course highGradeWrongCourse = new Course("PSYC101", 3, 95.0);
         testProfile.addCourse(highGradeWrongCourse);
         assertFalse(testProfile.eligible(spec));
+    }
+
+    @Test
+    void testGetMissingPrerequisitesAllMissing() {
+        ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
+        
+        assertEquals(2, missing.size());
+        assertTrue(missing.contains(c1));
+        assertTrue(missing.contains(c2));
+    }
+
+    @Test
+    void testGetMissingPrerequisitesSomeMissing() {
+        testProfile.addCourse(c1);
+        
+        ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
+        
+        assertEquals(1, missing.size());
+        assertEquals(c2, missing.get(0));
+        assertFalse(missing.contains(c1));
+    }
+
+    @Test
+    void testGetMissingPrerequisitesNoneMissing() {
+
+        testProfile.addCourse(c1);
+        testProfile.addCourse(c2);
+        
+        ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
+        
+        assertTrue(missing.isEmpty());
+    }
+
+    @Test
+    void testGetMissingPrerequisitesCaseInsensitive() {
+        Course lowerCaseCourse = new Course("cpsc 110", 4, 85.0);
+        testProfile.addCourse(lowerCaseCourse);
+        
+        ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
+
+        for (Course c : missing) {
+            assertNotEquals("CPSC 110", c.getCode().toUpperCase());
+        }
     }
 }

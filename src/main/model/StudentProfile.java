@@ -72,11 +72,28 @@ public class StudentProfile {
      */
     private boolean hasCompleted(String courseCode) {
         for (Course c : completedCourses) {
-            if (c.getCode().equals(courseCode)) {
+            if (c.getCode().equalsIgnoreCase(courseCode)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * REQUIRES: spec != null
+     * EFFECTS: returns a list of prerequisite courses for the given specialization 
+     * that the student has not yet completed.
+     */
+    public ArrayList<Course> getMissingPrerequisites(Specialization spec) {
+        ArrayList<Course> prereqCourses = spec.getPrerequisites();
+        ArrayList<Course> missingCourses = new ArrayList<>();
+
+        for (Course c : prereqCourses) {
+            if (!hasCompleted(c.getCode())) {
+                missingCourses.add(c);
+            }
+        }
+        return missingCourses;
     }
 
     public String getName() {
