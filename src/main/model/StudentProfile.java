@@ -81,7 +81,7 @@ public class StudentProfile {
 
     /**
      * REQUIRES: spec != null
-     * EFFECTS: returns a list of prerequisite courses for the given specialization 
+     * EFFECTS: returns a list of prerequisite courses for the given specialization
      * that the student has not yet completed.
      */
     public ArrayList<Course> getMissingPrerequisites(Specialization spec) {
@@ -94,6 +94,25 @@ public class StudentProfile {
             }
         }
         return missingCourses;
+    }
+
+    /**
+     * REQUIRES: spec != null
+     * EFFECTS: returns a double between 0 and 100 representing the
+     * admission probability based on GPA difference.
+     */
+    public double calculateAdmissionProbability(Specialization spec) {
+        double currentGPA = calculateGPA();
+        double avgCutoff = spec.getHistoricalAverage();
+
+        if (currentGPA >= avgCutoff + 5.0) {
+            return 95.0;
+        } else if (currentGPA <= avgCutoff - 10.0) {
+            return 5.0;
+        } else {
+            double diff = currentGPA - avgCutoff;
+            return 50.0 + (diff * 5.0);
+        }
     }
 
     public String getName() {

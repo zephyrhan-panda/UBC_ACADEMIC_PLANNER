@@ -79,7 +79,7 @@ public class StudentProfileTest {
     @Test
     void testGetMissingPrerequisitesAllMissing() {
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-        
+
         assertEquals(2, missing.size());
         assertTrue(missing.contains(c1));
         assertTrue(missing.contains(c2));
@@ -88,9 +88,9 @@ public class StudentProfileTest {
     @Test
     void testGetMissingPrerequisitesSomeMissing() {
         testProfile.addCourse(c1);
-        
+
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-        
+
         assertEquals(1, missing.size());
         assertEquals(c2, missing.get(0));
         assertFalse(missing.contains(c1));
@@ -101,9 +101,9 @@ public class StudentProfileTest {
 
         testProfile.addCourse(c1);
         testProfile.addCourse(c2);
-        
+
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-        
+
         assertTrue(missing.isEmpty());
     }
 
@@ -111,11 +111,31 @@ public class StudentProfileTest {
     void testGetMissingPrerequisitesCaseInsensitive() {
         Course lowerCaseCourse = new Course("cpsc 110", 4, 85.0);
         testProfile.addCourse(lowerCaseCourse);
-        
+
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
 
         for (Course c : missing) {
             assertNotEquals("CPSC 110", c.getCode().toUpperCase());
         }
+    }
+
+    @Test
+    void testCalculateProbabilityHighGPA() {
+        testProfile.addCourse(c1);
+        assertEquals(95.0, testProfile.calculateAdmissionProbability(spec));
+    }
+
+    @Test
+    void testCalculateProbabilityAverageGPA() {
+        Course avgCourse = new Course("MATH100", 3, 85.0);
+        testProfile.addCourse(avgCourse);
+        assertEquals(50.0, testProfile.calculateAdmissionProbability(spec));
+    }
+
+    @Test
+    void testCalculateProbabilityLowGPA() {
+        Course lowCourse = new Course("CPSC110", 4, 70.0);
+        testProfile.addCourse(lowCourse);
+        assertEquals(5.0, testProfile.calculateAdmissionProbability(spec));
     }
 }
