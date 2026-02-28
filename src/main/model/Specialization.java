@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +83,41 @@ public class Specialization {
         }
         return false;
     }
+
+    /**
+     * EFFECTS: returns this specialization as a JSON object
+     */
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("historicalCutoffs", cutoffsToJson());
+        json.put("prerequisites", prerequisitesToJson());
+        return json;
+    }
+
+    /**
+     * EFFECTS: returns historical cutoffs in this specialization as a JSON array
+     */
+    private JSONArray cutoffsToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Double c : cutoff) {
+            jsonArray.put(c);
+        }
+        return jsonArray;
+    }
+
+    /**
+     * EFFECTS: returns prerequisites in this specialization as a JSON array
+     */
+    private JSONArray prerequisitesToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Course c : prerequisites) {
+            jsonArray.put(c.toJson());
+        }
+        return jsonArray;
+    }
+
+    // --- Getters ---
 
     public String getName() {
         return name;

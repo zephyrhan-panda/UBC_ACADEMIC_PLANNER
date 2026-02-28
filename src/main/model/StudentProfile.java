@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 //Represents a student's academic profile, managing their courses and 
 //calculating admission probabilities for science specializations.
@@ -113,6 +115,27 @@ public class StudentProfile {
             double diff = currentGPA - avgCutoff;
             return 50.0 + (diff * 5.0);
         }
+    }
+
+    /**
+     * EFFECTS: returns this student profile as a JSON object
+     */
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("courses", coursesToJson());
+        return json;
+    }
+
+    /**
+     * EFFECTS: returns courses in this student profile as a JSON array
+     */
+    private JSONArray coursesToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Course c : completedCourses) {
+            jsonArray.put(c.toJson());
+        }
+        return jsonArray;
     }
 
     public String getName() {

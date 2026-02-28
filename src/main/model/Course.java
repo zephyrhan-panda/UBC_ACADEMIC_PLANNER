@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // Represents a single course with its course code, 
 // credits, and the grade the student achieved
 public class Course {
@@ -22,6 +24,15 @@ public class Course {
         this.grade = studentGrade;
     }
 
+    // EFFECTS: returns this course as a JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        json.put("credits", credits);
+        json.put("grade", grade);
+        return json;
+    }
+
     public String getCode() {
         return code;
     }
@@ -33,5 +44,4 @@ public class Course {
     public double getGrade() {
         return grade;
     }
-
 }
