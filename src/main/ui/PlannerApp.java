@@ -1,10 +1,15 @@
 package ui;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.StudentProfile;
 import model.Course;
 import model.Specialization;
 import java.util.*;
 
+// Represents the UBC Science Specialization Planner application user interface.
+// This class manages user interactions, displays menus, and coordinates 
+// between the user input and the academic planning models.
+@ExcludeFromJacocoGeneratedReport
 public class PlannerApp {
     private StudentProfile userProfile;
     private List<Specialization> availableSpecs;
@@ -63,6 +68,7 @@ public class PlannerApp {
         System.out.println("4 -> Predict my admission probability");
         System.out.println("5 -> Check missing prerequisites");
         System.out.println("6 -> View top searched specialization");
+        System.out.println("7 -> View my current profile and courses");
         System.out.println("q -> Quit");
         System.out.print("Select an option: ");
     }
@@ -82,6 +88,8 @@ public class PlannerApp {
             checkPrerequisites();
         } else if (command.equals("6")) {
             viewTopSearchedMajors();
+        } else if (command.equals("7")) {
+            viewMyProfile();
         } else {
             System.out.println("Invalid selection...");
         }
@@ -164,5 +172,27 @@ public class PlannerApp {
     // Stub
     private void viewTopSearchedMajors() {
         System.out.println("Top searched major: Computer Science");
+    }
+
+    // EFFECTS: displays the student's name, list of all added courses with 
+    //          their details, and the cumulative GPA
+    private void viewMyProfile() {
+        List<Course> courses = userProfile.getCourses();
+        
+        System.out.println("\n--- STUDENT ACADEMIC RECORD ---");
+        System.out.println("Student Name: " + userProfile.getName());
+        
+        if (courses.isEmpty()) {
+            System.out.println("No courses have been added yet.");
+        } else {
+            System.out.println("Courses:");
+            for (Course c : courses) {
+                System.out.println("- " + c.getCode() + ": " 
+                                   + c.getCredits() + " credits, Grade: " 
+                                   + c.getGrade());
+            }
+            System.out.println("\nCumulative GPA: " + userProfile.calculateGPA());
+        }
+        System.out.println("-------------------------------");
     }
 }

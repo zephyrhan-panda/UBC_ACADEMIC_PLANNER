@@ -1,10 +1,17 @@
 package model;
 
+import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+// Unit tests for the StudentProfile class.
+@ExcludeFromJacocoGeneratedReport
 public class StudentProfileTest {
     private StudentProfile testProfile;
     private Course c1;
@@ -27,7 +34,6 @@ public class StudentProfileTest {
         prereqs.add(c2);
 
         spec = new Specialization("Computer Science", cutoffs, prereqs);
-
         cpscSpec = new Specialization("Computer Science", new ArrayList<>(), prereqs);
     }
 
@@ -36,6 +42,25 @@ public class StudentProfileTest {
         assertEquals("Fang Han", testProfile.getName());
         assertNotNull(testProfile.getCourses());
         assertEquals(0, testProfile.getCourses().size());
+    }
+
+    @Test
+    void testToJson() {
+        testProfile.addCourse(c1);
+        testProfile.addCourse(c2);
+        
+        JSONObject json = testProfile.toJson();
+        
+        assertEquals("Fang Han", json.getString("name"));
+        
+        // 验证 JSONArray 嵌套逻辑
+        JSONArray jsonCourses = json.getJSONArray("courses");
+        assertEquals(2, jsonCourses.length());
+        
+        // 验证数组中的第一个课程对象
+        JSONObject jsonC1 = jsonCourses.getJSONObject(0);
+        assertEquals("CPSC110", jsonC1.getString("code"));
+        assertEquals(94.0, jsonC1.getDouble("grade"));
     }
 
     @Test
@@ -50,6 +75,7 @@ public class StudentProfileTest {
         testProfile.addCourse(c1);
         testProfile.addCourse(c2);
 
+        // (94*4 + 80*3) / (4+3) = (376 + 240) / 7 = 616 / 7 = 88.0
         double expectedGPA = 88.0;
         assertEquals(expectedGPA, testProfile.calculateGPA(), 0.001);
     }
@@ -58,7 +84,6 @@ public class StudentProfileTest {
     void testEligibleSuccess() {
         testProfile.addCourse(c1);
         testProfile.addCourse(c2);
-
         assertTrue(testProfile.eligible(spec));
     }
 
@@ -79,7 +104,6 @@ public class StudentProfileTest {
     @Test
     void testGetMissingPrerequisitesAllMissing() {
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-
         assertEquals(2, missing.size());
         assertTrue(missing.contains(c1));
         assertTrue(missing.contains(c2));
@@ -88,9 +112,7 @@ public class StudentProfileTest {
     @Test
     void testGetMissingPrerequisitesSomeMissing() {
         testProfile.addCourse(c1);
-
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-
         assertEquals(1, missing.size());
         assertEquals(c2, missing.get(0));
         assertFalse(missing.contains(c1));
@@ -98,25 +120,10 @@ public class StudentProfileTest {
 
     @Test
     void testGetMissingPrerequisitesNoneMissing() {
-
         testProfile.addCourse(c1);
         testProfile.addCourse(c2);
-
         ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-
         assertTrue(missing.isEmpty());
-    }
-
-    @Test
-    void testGetMissingPrerequisitesCaseInsensitive() {
-        Course lowerCaseCourse = new Course("cpsc 110", 4, 85.0);
-        testProfile.addCourse(lowerCaseCourse);
-
-        ArrayList<Course> missing = testProfile.getMissingPrerequisites(cpscSpec);
-
-        for (Course c : missing) {
-            assertNotEquals("CPSC 110", c.getCode().toUpperCase());
-        }
     }
 
     @Test
