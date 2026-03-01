@@ -4,6 +4,11 @@ import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
 import model.StudentProfile;
 import model.Course;
 import model.Specialization;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 // Represents the UBC Science Specialization Planner application user interface.
@@ -11,10 +16,13 @@ import java.util.*;
 // between the user input and the academic planning models.
 @ExcludeFromJacocoGeneratedReport
 public class PlannerApp {
+    private static final String JSON_STORE = "./data/profile.json";
     private StudentProfile userProfile;
     private List<Specialization> availableSpecs;
     private Scanner userinput;
     private boolean started;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: constructs the planner, initializes data, and runs the application
     public PlannerApp() {
@@ -23,12 +31,13 @@ public class PlannerApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes profile, specialization list, scanner, and starting
-    // status
+    // EFFECTS: initializes profile, specialization list, scanner, json tools and starting status
     private void init() {
         userProfile = new StudentProfile("User");
         userinput = new Scanner(System.in);
         availableSpecs = new ArrayList<>();
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         started = true;
         initializeDefaultData();
     }
@@ -69,6 +78,8 @@ public class PlannerApp {
         System.out.println("5 -> Check missing prerequisites");
         System.out.println("6 -> View top searched specialization");
         System.out.println("7 -> View my current profile and courses");
+        System.out.println("s -> Save my profile to file");
+        System.out.println("l -> Load my profile from file");
         System.out.println("q -> Quit");
         System.out.print("Select an option: ");
     }
@@ -90,6 +101,10 @@ public class PlannerApp {
             viewTopSearchedMajors();
         } else if (command.equals("7")) {
             viewMyProfile();
+        } else if (command.equals("s")) {
+            saveProfile();
+        } else if (command.equals("l")) {
+            loadProfile();
         } else {
             System.out.println("Invalid selection...");
         }
@@ -108,21 +123,18 @@ public class PlannerApp {
         System.out.println("Course added! Your current GPA: " + userProfile.calculateGPA());
     }
 
-    // EFFECTS: displays the names and average historical cut-off GPAs
-    // for all available specializations
+    // EFFECTS: displays the names and average historical cut-off GPAs for all available specializations
     private void viewSpecializations() {
         System.out.println("\nAvailable Science Specializations:");
         for (int i = 0; i < availableSpecs.size(); i++) {
             Specialization s = availableSpecs.get(i);
-
             System.out.println("[" + i + "] " + s.getName()
                     + " (Average Cut-off: " + s.getHistoricalAverage() + ")");
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: prompts the user to select a specialization, calculates the
-    // admission
+    // EFFECTS: prompts the user to select a specialization, calculates the admission
     // probability based on user's current GPA, and prints the result
     private void predictAdmissionProbability() {
         viewSpecializations();
@@ -131,10 +143,7 @@ public class PlannerApp {
 
         if (index >= 0 && index < availableSpecs.size()) {
             Specialization selected = availableSpecs.get(index);
-
-            // Calling the non-trivial logic you wrote in the StudentProfile model
             double prob = userProfile.calculateAdmissionProbability(selected);
-
             System.out.println("Based on your GPA of " + userProfile.calculateGPA()
                     + ", your predicted admission probability for "
                     + selected.getName() + " is: " + prob + "%");
@@ -144,13 +153,11 @@ public class PlannerApp {
     }
 
     // EFFECTS: displays the competitiveness ranking of specializations
-    // Stub
     private void viewRankings() {
         System.out.println("Wait a second to see the ranking...");
     }
 
-    // EFFECTS: identifies and prints courses missing from prerequisites for a
-    // selected major
+    // EFFECTS: identifies and prints courses missing from prerequisites for a selected major
     private void checkPrerequisites() {
         viewSpecializations();
         System.out.print("Select specialization: ");
@@ -169,16 +176,13 @@ public class PlannerApp {
     }
 
     // EFFECTS: shows the most searched major in the current session
-    // Stub
     private void viewTopSearchedMajors() {
         System.out.println("Top searched major: Computer Science");
     }
 
-    // EFFECTS: displays the student's name, list of all added courses with 
-    //          their details, and the cumulative GPA
+    // EFFECTS: displays the student's name, list of all added courses with their details, and the cumulative GPA
     private void viewMyProfile() {
         List<Course> courses = userProfile.getCourses();
-        
         System.out.println("\n--- STUDENT ACADEMIC RECORD ---");
         System.out.println("Student Name: " + userProfile.getName());
         
@@ -194,5 +198,28 @@ public class PlannerApp {
             System.out.println("\nCumulative GPA: " + userProfile.calculateGPA());
         }
         System.out.println("-------------------------------");
+    }
+
+    // EFFECTS: saves the student profile to file
+    private void saveProfile() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(userProfile);
+            jsonWriter.close();
+            System.out.println("Saved " + userProfile.getName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads student profile from file
+    private void loadProfile() {
+        try {
+            userProfile = jsonReader.read();
+            System.out.println("Loaded " + userProfile.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }
