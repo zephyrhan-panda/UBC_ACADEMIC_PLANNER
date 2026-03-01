@@ -7,7 +7,7 @@ import java.util.List;
 import persistence.Writable;
 
 // Represents a UBC Science specialization with a name, historical cutoffs, and prerequisites.
-public class Specialization implements Writable{
+public class Specialization implements Writable {
     private String name;
     private ArrayList<Double> cutoff;
     private ArrayList<Course> prerequisites;
@@ -76,7 +76,7 @@ public class Specialization implements Writable{
      * EFFECTS: returns true if a course with the same code as c exists in the completed list;
      * false otherwise.
      */
-    public Boolean hasCompleted(Course c, List<Course> completed) {
+    public boolean hasCompleted(Course c, List<Course> completed) { 
         for (Course completedCourse : completed) {
             if (completedCourse.getCode().equalsIgnoreCase(c.getCode())) {
                 return true;
@@ -85,6 +85,7 @@ public class Specialization implements Writable{
         return false;
     }
 
+    @Override
     /**
      * EFFECTS: returns this specialization as a JSON object
      */

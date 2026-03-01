@@ -3,11 +3,9 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
-
-
 // Represents a single course with its course code, 
 // credits, and the grade the student achieved
-public class Course implements Writable{
+public class Course implements Writable {
     private String code;
     private int credits;
     private double grade;
@@ -27,6 +25,7 @@ public class Course implements Writable{
         this.grade = studentGrade;
     }
 
+    @Override
     // EFFECTS: returns this course as a JSON object
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
