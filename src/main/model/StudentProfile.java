@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import persistence.Writable;
 //Represents a student's academic profile, managing their courses and 
 //calculating admission probabilities for science specializations.
-public class StudentProfile {
+public class StudentProfile implements Writable{
     private String name;
     private List<Course> completedCourses;
 

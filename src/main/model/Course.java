@@ -1,10 +1,13 @@
 package model;
 
 import org.json.JSONObject;
+import persistence.Writable;
+
+
 
 // Represents a single course with its course code, 
 // credits, and the grade the student achieved
-public class Course {
+public class Course implements Writable{
     private String code;
     private int credits;
     private double grade;

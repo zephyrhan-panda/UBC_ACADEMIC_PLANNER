@@ -1,0 +1,15 @@
+{
+    "courses": [
+        {
+            "code": "CPSC210",
+            "credits": 4,
+            "grade": 95
+        },
+        {
+            "code": "MATH200",
+            "credits": 3,
+            "grade": 88
+        }
+    ],
+    "name": "Fang Han"
+}
