@@ -2,7 +2,7 @@
     "courses": [{
         "code": "cpsc210",
         "credits": 4,
-        "grade": 95
+        "grade": 90
     }],
     "name": "User"
 }

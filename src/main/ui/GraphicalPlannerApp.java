@@ -63,20 +63,16 @@ public class GraphicalPlannerApp extends JFrame implements ActionListener {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(new BorderLayout());
 
-        // 1. Visual Component (15 pts) - 你的图片在这！
-        // 如果你的图片叫 logo.jpg，请把下面的 .png 改成 .jpg
         ImageIcon logoIcon = new ImageIcon("data/ubcscience.jpg");
         JLabel imageLabel = new JLabel(logoIcon);
         add(imageLabel, BorderLayout.NORTH);
 
-        // 2. Panel displaying added Xs (50 pts) - 课程显示区
         listModel = new DefaultListModel<>();
         courseList = new JList<>(listModel);
         JScrollPane scrollPane = new JScrollPane(courseList);
         scrollPane.setBorder(BorderFactory.createTitledBorder("My Academic Record"));
         add(scrollPane, BorderLayout.CENTER);
 
-        // 3. Actions and Save/Load Buttons (50 pts + 30 pts)
         JPanel controlPanel = createControlPanel();
         add(controlPanel, BorderLayout.SOUTH);
 
@@ -121,7 +117,7 @@ public class GraphicalPlannerApp extends JFrame implements ActionListener {
         actionPanel.add(createButton("Load Data", "Load"));
         return actionPanel;
     }
-    
+
     // EFFECTS: creates a button with the given label and action command, sets this as listener
     private JButton createButton(String label, String command) {
         JButton button = new JButton(label);
