@@ -29,3 +29,11 @@ Many first-year students, including myself, find the specialization application 
 - As a user, I want to be able to see the **top searched specialization** on this app.
 - As a user, I want to be able to save my current student profile (including all my added courses) to a file so that I can keep my progress for next time.
 - As a user, I want to be able to load my previous student profile from a file so that I can continue my academic planning from where I left off.
+
+# Instructions for End User
+- You can view the panel that displays the courses that have already been added to the profile by looking at the central scrollable list titled "My Academic Record".
+- You can generate the first required action related to the user story "adding multiple Xs to a Y" by typing the course code, credits, and grade into the respective text fields at the bottom, and then clicking the "Add Course" button.
+- You can generate the second required action related to the user story "adding multiple Xs to a Y" by clicking the "Predict Admission" button, which will calculate your admission probability based on your current courses and display it in a pop-up dialog.
+- You can locate my visual component by looking at the very top of the application window, where the UBC Science logo image is prominently displayed.
+- You can save the state of my application by clicking the "Save Data" button located at the bottom right of the control panel.
+- You can reload the state of my application by clicking the "Load Data" button located at the bottom right of the control panel.
