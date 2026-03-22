@@ -7,7 +7,7 @@ import java.util.List;
 import persistence.Writable;
 
 // Represents a UBC Science specialization with a name, historical cutoffs, and prerequisites.
-public class Specialization implements Writable {
+public class Specialization implements Writable { 
     private String name;
     private ArrayList<Double> cutoff;
     private ArrayList<Course> prerequisites;

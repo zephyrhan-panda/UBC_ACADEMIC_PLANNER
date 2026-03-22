@@ -28,7 +28,6 @@ public class JsonWriter {
     // MODIFIES: this
     // EFFECTS: writes JSON representation of StudentProfile to file
     public void write(StudentProfile profile) {
-        // 这里调用了你之前在 StudentProfile 里辛苦写好的 toJson()！
         JSONObject json = profile.toJson();
         saveToFile(json.toString(TAB));
     }
