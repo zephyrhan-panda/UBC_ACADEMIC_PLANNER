@@ -1,26 +1,210 @@
 package ui;
 
 import ca.ubc.cs.ExcludeFromJacocoGeneratedReport;
+import model.Course;
+import model.Specialization;
+import model.StudentProfile;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 // Represents the graphical user interface for the UBC Science Planner
 @ExcludeFromJacocoGeneratedReport
-public class GraphicalPlannerApp extends JFrame {
+public class GraphicalPlannerApp extends JFrame implements ActionListener {
+    private static final String JSON_STORE = "./data/profile.json";
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
 
-    // EFFECTS: constructs the main application window
-    public GraphicalPlannerApp() {
-        super("UBC Science Specialization Planner"); 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); 
-        setPreferredSize(new Dimension(WIDTH, HEIGHT)); 
-        
-        
+    private StudentProfile profile;
+    private List<Specialization> availableSpecs;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
-        pack(); 
-        setLocationRelativeTo(null); 
-        setVisible(true); 
+    // UI Components
+    private DefaultListModel<String> listModel;
+    private JList<String> courseList;
+    private JTextField codeField;
+    private JTextField creditsField;
+    private JTextField gradeField;
+
+    // EFFECTS: constructs the main application window and initializes data
+    public GraphicalPlannerApp() {
+        super("UBC Science Specialization Planner");
+        initData();
+        initGUI();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes the student profile, JSON tools, and default specializations
+    private void initData() {
+        profile = new StudentProfile("User");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        availableSpecs = new ArrayList<>();
+        ArrayList<Double> cpscCutoffs = new ArrayList<>(Arrays.asList(83.0, 85.0, 84.0));
+        ArrayList<Course> cpscPrereqs = new ArrayList<>();
+        cpscPrereqs.add(new Course("CPSC110", 4, 0.0));
+        availableSpecs.add(new Specialization("Computer Science", cpscCutoffs, cpscPrereqs));
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets up the main layout, panels, buttons, and visual components
+    private void initGUI() {
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setLayout(new BorderLayout());
+
+        // 1. Visual Component (15 pts) - 你的图片在这！
+        // 如果你的图片叫 logo.jpg，请把下面的 .png 改成 .jpg
+        ImageIcon logoIcon = new ImageIcon("data/ubcscience.jpg");
+        JLabel imageLabel = new JLabel(logoIcon);
+        add(imageLabel, BorderLayout.NORTH);
+
+        // 2. Panel displaying added Xs (50 pts) - 课程显示区
+        listModel = new DefaultListModel<>();
+        courseList = new JList<>(listModel);
+        JScrollPane scrollPane = new JScrollPane(courseList);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("My Academic Record"));
+        add(scrollPane, BorderLayout.CENTER);
+
+        // 3. Actions and Save/Load Buttons (50 pts + 30 pts)
+        JPanel controlPanel = createControlPanel();
+        add(controlPanel, BorderLayout.SOUTH);
+
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    // EFFECTS: creates and returns the panel containing input fields and buttons
+    private JPanel createControlPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(2, 1));
+
+        // Top row: Inputs and Add button
+        JPanel inputPanel = new JPanel(new FlowLayout());
+        codeField = new JTextField(7);
+        creditsField = new JTextField(3);
+        gradeField = new JTextField(4);
+        JButton addButton = new JButton("Add Course");
+        addButton.setActionCommand("Add");
+        addButton.addActionListener(this);
+
+        inputPanel.add(new JLabel("Code:"));
+        inputPanel.add(codeField);
+        inputPanel.add(new JLabel("Credits:"));
+        inputPanel.add(creditsField);
+        inputPanel.add(new JLabel("Grade:"));
+        inputPanel.add(gradeField);
+        inputPanel.add(addButton);
+
+        // Bottom row: Other actions
+        JPanel actionPanel = new JPanel(new FlowLayout());
+        JButton predictButton = createButton("Predict Admission", "Predict");
+        JButton saveButton = createButton("Save Data", "Save");
+        JButton loadButton = createButton("Load Data", "Load");
+
+        actionPanel.add(predictButton);
+        actionPanel.add(saveButton);
+        actionPanel.add(loadButton);
+
+        panel.add(inputPanel);
+        panel.add(actionPanel);
+        return panel;
+    }
+
+    // EFFECTS: creates a button with the given label and action command, sets this as listener
+    private JButton createButton(String label, String command) {
+        JButton button = new JButton(label);
+        button.setActionCommand(command);
+        button.addActionListener(this);
+        return button;
+    }
+
+    @Override
+    // MODIFIES: this
+    // EFFECTS: handles button click events based on the action command
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("Add")) {
+            addCourseAction();
+        } else if (command.equals("Predict")) {
+            predictAction();
+        } else if (command.equals("Save")) {
+            saveAction();
+        } else if (command.equals("Load")) {
+            loadAction();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: reads input fields, creates a course, adds to profile, and updates display
+    private void addCourseAction() {
+        try {
+            String code = codeField.getText();
+            int credits = Integer.parseInt(creditsField.getText());
+            double grade = Double.parseDouble(gradeField.getText());
+            
+            Course course = new Course(code, credits, grade);
+            profile.addCourse(course);
+            
+            codeField.setText("");
+            creditsField.setText("");
+            gradeField.setText("");
+            updateCourseList();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers for credits and grade!");
+        }
+    }
+
+    // EFFECTS: calculates admission probability and shows it in a pop-up dialog
+    private void predictAction() {
+        Specialization cs = availableSpecs.get(0);
+        double prob = profile.calculateAdmissionProbability(cs);
+        JOptionPane.showMessageDialog(this, 
+                "Predicted probability for Computer Science: " + prob + "%");
+    }
+
+    // EFFECTS: saves the profile to file and shows a confirmation dialog
+    private void saveAction() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(profile);
+            jsonWriter.close();
+            JOptionPane.showMessageDialog(this, "Data saved successfully to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Unable to save data.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads the profile from file, updates display, and shows a confirmation dialog
+    private void loadAction() {
+        try {
+            profile = jsonReader.read();
+            updateCourseList();
+            JOptionPane.showMessageDialog(this, "Data loaded successfully from " + JSON_STORE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Unable to load data.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: refreshes the visual list to match the courses in the current profile
+    private void updateCourseList() {
+        listModel.clear();
+        for (Course c : profile.getCourses()) {
+            listModel.addElement(c.getCode() + " - " + c.getCredits() + " credits - Grade: " + c.getGrade());
+        }
     }
 
     // EFFECTS: starts the graphical application
