@@ -89,15 +89,18 @@ public class GraphicalPlannerApp extends JFrame implements ActionListener {
     private JPanel createControlPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1));
+        panel.add(createInputPanel());
+        panel.add(createActionPanel());
+        return panel;
+    }
 
-        // Top row: Inputs and Add button
+    // EFFECTS: creates the top row panel with input fields and the add button
+    private JPanel createInputPanel() {
         JPanel inputPanel = new JPanel(new FlowLayout());
         codeField = new JTextField(7);
         creditsField = new JTextField(3);
         gradeField = new JTextField(4);
-        JButton addButton = new JButton("Add Course");
-        addButton.setActionCommand("Add");
-        addButton.addActionListener(this);
+        JButton addButton = createButton("Add Course", "Add");
 
         inputPanel.add(new JLabel("Code:"));
         inputPanel.add(codeField);
@@ -106,22 +109,19 @@ public class GraphicalPlannerApp extends JFrame implements ActionListener {
         inputPanel.add(new JLabel("Grade:"));
         inputPanel.add(gradeField);
         inputPanel.add(addButton);
-
-        // Bottom row: Other actions
-        JPanel actionPanel = new JPanel(new FlowLayout());
-        JButton predictButton = createButton("Predict Admission", "Predict");
-        JButton saveButton = createButton("Save Data", "Save");
-        JButton loadButton = createButton("Load Data", "Load");
-
-        actionPanel.add(predictButton);
-        actionPanel.add(saveButton);
-        actionPanel.add(loadButton);
-
-        panel.add(inputPanel);
-        panel.add(actionPanel);
-        return panel;
+        
+        return inputPanel;
     }
 
+    // EFFECTS: creates the bottom row panel with predict, save, and load buttons
+    private JPanel createActionPanel() {
+        JPanel actionPanel = new JPanel(new FlowLayout());
+        actionPanel.add(createButton("Predict Admission", "Predict"));
+        actionPanel.add(createButton("Save Data", "Save"));
+        actionPanel.add(createButton("Load Data", "Load"));
+        return actionPanel;
+    }
+    
     // EFFECTS: creates a button with the given label and action command, sets this as listener
     private JButton createButton(String label, String command) {
         JButton button = new JButton(label);
