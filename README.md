@@ -37,3 +37,15 @@ Many first-year students, including myself, find the specialization application 
 - You can locate my visual component by looking at the very top of the application window, where the UBC Science logo image is prominently displayed.
 - You can save the state of my application by clicking the "Save Data" button located at the bottom right of the control panel.
 - You can reload the state of my application by clicking the "Load Data" button located at the bottom right of the control panel.
+
+
+# Phase 4: Task 2
+Representative sample of events logged by the application:
+
+Event Log:
+Sat Mar 28 18:20:00 PDT 2026
+Event log cleared.
+Sat Mar 28 18:17:17 PDT 2026
+Added course: MATH200 to the profile.
+Sat Mar 28 18:20:20 PDT 2026
+Added course: CPSC121 to the profile.

@@ -30,6 +30,8 @@ public class StudentProfile implements Writable {
      */
     public void addCourse(Course course) {
         completedCourses.add(course);
+
+        EventLog.getInstance().logEvent(new Event("Added course: " + course.getCode() + " to the profile."));
     }
 
     /**

@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 // Represents the graphical user interface for the UBC Science Planner
 @ExcludeFromJacocoGeneratedReport
 public class GraphicalPlannerApp extends JFrame implements ActionListener {
@@ -59,7 +62,7 @@ public class GraphicalPlannerApp extends JFrame implements ActionListener {
     // MODIFIES: this
     // EFFECTS: sets up the main layout, panels, buttons, and visual components
     private void initGUI() {
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setupWindowListener();
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLayout(new BorderLayout());
 
@@ -79,6 +82,21 @@ public class GraphicalPlannerApp extends JFrame implements ActionListener {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    // EFFECTS: sets up the window listener to print event log on exit
+    private void setupWindowListener() {
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("Event Log:");
+                for (model.Event next : model.EventLog.getInstance()) {
+                    System.out.println(next.toString());
+                }
+                System.exit(0);
+            }
+        });
     }
 
     // EFFECTS: creates and returns the panel containing input fields and buttons
