@@ -49,3 +49,13 @@ Sat Mar 28 18:17:17 PDT 2026
 Added course: MATH200 to the profile.
 Sat Mar 28 18:20:20 PDT 2026
 Added course: CPSC121 to the profile.
+
+# Phase 4: Task 3
+
+If I had more time to work on the project, I would perform a major refactoring to address issues of low cohesion and high coupling, specifically by introducing the **Observer Pattern** and a **Controller/Manager** class.
+
+Currently, the `GraphicalPlannerApp` acts somewhat like a "God Class". It handles UI rendering, directly interacts with `JsonReader` and `JsonWriter` for data persistence, and must manually refresh its own display components whenever a `Course` is added to the `StudentProfile`. This design violates the Single Responsibility Principle, resulting in low cohesion within the UI layer and tight coupling across the UI, Model, and Persistence layers.
+
+To improve this design, my first step would be implementing the **Observer Pattern** to decouple the Model from the UI. I would make `StudentProfile` the *Subject* (Observable) and the `GraphicalPlannerApp` (or its specific panels) the *Observer*. When a course is added, the `StudentProfile` would automatically call `notifyObservers()`. The UI would simply listen for this event and update itself. This removes the need for the UI to manually manage data synchronization, significantly reducing coupling. 
+
+Secondly, I would extract the file saving and loading logic into a new `ProfileManager` class. This manager would handle all the `try-catch` blocks and interactions with the persistence layer. By doing this, the UI classes would only need to communicate with the `ProfileManager`, achieving much higher cohesion (UI only cares about visuals and user inputs) and keeping the architecture clean and modular.
